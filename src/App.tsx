@@ -1,5 +1,5 @@
 import "./App.css";
-import { Login, Register } from "./pages";
+import { Category, Login, Register } from "./pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PublicLayout } from "./layout";
 
@@ -19,6 +19,10 @@ function App() {
         {
           path: "/register",
           element: <Register />,
+        },
+        {
+          path: "/category",
+          element: <Category />,
         },
       ],
     },
