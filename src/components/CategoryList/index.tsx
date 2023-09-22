@@ -7,6 +7,7 @@ import {
   TableRow,
   Paper,
   Button,
+  ButtonGroup,
 } from "@mui/material";
 import { Category } from "../../types";
 
@@ -37,19 +38,21 @@ const CategoryList = ({ data, onClickEdit, onClickDelete }: Props) => {
                 {item.is_active ? "Active" : "Inactive"}
               </TableCell>
               <TableCell align="center">
-                <Button
-                  variant="contained"
-                  onClick={() => onClickEdit(item.id)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={() => onClickDelete(item.id)}
-                >
-                  Delete
-                </Button>
+                <ButtonGroup disableElevation>
+                  <Button
+                    variant="contained"
+                    onClick={() => onClickEdit(item.id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => onClickDelete(item.id)}
+                  >
+                    Delete
+                  </Button>
+                </ButtonGroup>
               </TableCell>
             </TableRow>
           ))}

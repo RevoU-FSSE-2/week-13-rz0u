@@ -1,5 +1,5 @@
 import "./App.css";
-import { Category, Login, Register } from "./pages";
+import { Category, CategoryAdd, CategoryEdit, Login, Register } from "./pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PublicLayout } from "./layout";
 
@@ -23,6 +23,14 @@ function App() {
         {
           path: "/category",
           element: <Category />,
+        },
+        {
+          path: "/category/edit",
+          element: <CategoryEdit />,
+        },
+        {
+          path: "/category/add",
+          element: <CategoryAdd />,
         },
       ],
     },

@@ -3,13 +3,19 @@ import { GetCategoryResponse } from "../../types";
 import axios from "axios";
 import { CategoryList as CategoryTable } from "../../components";
 import { Box, Button, Container, Typography } from "@mui/material";
-// import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 const CategoryList = () => {
+  const navigate = useNavigate();
+  const validate = localStorage.getItem("token");
+  if (!validate) {
+    navigate("/login");
+  }
   const [info, setInfo] = useState<GetCategoryResponse>();
 
   const handleEditClick = (id: string) => {
     console.log(`Edit clicked for ID: ${id}`);
+    navigate("/category/edit");
   };
   const handleDeleteClick = (id: string) => {
     console.log(`Delete clicked for ID: ${id}`);
@@ -34,8 +40,6 @@ const CategoryList = () => {
         console.error(`Error deleting resource with ID ${id}:`, error);
       });
   };
-
-  // const navigate = useNavigate()
 
   const token = localStorage.getItem("token");
   const headers = {
@@ -85,7 +89,11 @@ const CategoryList = () => {
           marginLeft: "auto",
         }}
       >
-        <Button variant="outlined" sx={{ m: "1rem", mr: "6rem" }}>
+        <Button
+          variant="outlined"
+          sx={{ m: "1rem", mr: "6rem" }}
+          onClick={() => navigate("/category/add")}
+        >
           Add
         </Button>
       </Box>
