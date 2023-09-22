@@ -26,7 +26,7 @@ export interface RegisterResponse {
 export interface Category {
   id: string;
   name: string;
-  is_active: boolean;
+  is_active: boolean | undefined;
 }
 
 export interface GetCategoryResponse {
@@ -34,4 +34,11 @@ export interface GetCategoryResponse {
   current_page: number;
   total_item: number;
   total_page: number;
+}
+
+export type CategoryForm = Omit<Category, "id">;
+
+export interface CategoryPayload {
+  name: string;
+  is_active: boolean | undefined;
 }
