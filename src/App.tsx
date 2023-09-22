@@ -1,5 +1,5 @@
 import "./App.css";
-import { Login, Register } from "./components";
+import { Login, Register } from "./pages";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PublicLayout } from "./layout";
 

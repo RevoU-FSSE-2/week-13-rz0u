@@ -4,10 +4,9 @@ export interface LoginForm {
 }
 
 export interface LoginResponse {
-  name: string;
-  email: string;
-  password: string;
-  token: string;
+  data: {
+    token: string;
+  };
 }
 
 export interface RegisterForm {
@@ -17,7 +16,9 @@ export interface RegisterForm {
 }
 
 export interface RegisterResponse {
-  name: string;
-  email: string;
-  password: string;
+  data: {
+    name: string;
+    email: string;
+    password: string;
+  };
 }

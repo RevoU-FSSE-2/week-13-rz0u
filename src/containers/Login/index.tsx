@@ -13,8 +13,9 @@ const Login = () => {
     );
     const response: LoginResponse = await fetching.json();
     if (response) {
-      localStorage.setItem("token", response.token);
+      localStorage.setItem("token", response.data.token);
       window.location.replace("/");
+      console.log(response);
     }
   };
 
