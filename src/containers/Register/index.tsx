@@ -16,7 +16,7 @@ const Register = () => {
     );
     const response: RegisterResponse = await fetching.json();
     if (response) {
-      window.location.replace("/");
+      window.location.replace("/login");
       console.log(response);
     }
   };
