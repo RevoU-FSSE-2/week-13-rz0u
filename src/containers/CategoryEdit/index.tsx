@@ -40,6 +40,10 @@ const CategoryEdit = () => {
       })
       .then((response) => {
         console.log("Edit Category form values submitted:", response.data);
+        console.log("Form values submitted:", values);
+      })
+      .catch((error) => {
+        console.log("Error updating:", error);
       });
     //     try {
     //       const fetching = await fetch(
