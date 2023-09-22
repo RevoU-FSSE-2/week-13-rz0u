@@ -1,83 +1,113 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { useFormik } from "formik";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { RegisterForm as RegisterFormProps } from "../../types";
+import { initialValues, validationSchema } from "./RegisterFormSchema";
 
-interface initialValues {
-  name: "";
-  email: "";
-  password: "";
+interface Props {
+  onSubmit: (values: RegisterFormProps) => void;
 }
 
-const Register = () => {
-  const [info, setInfo] = useState<initialValues>({
-    name: "",
-    email: "",
-    password: "",
+const RegisterForm = ({ onSubmit }: Props) => {
+  const handleSubmit = (values: RegisterFormProps) => {
+    onSubmit(values);
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: handleSubmit,
+    validationSchema: validationSchema,
   });
+
   const navigate = useNavigate();
 
   return (
-    <>
-      <Formik
-        initialValues={info}
-        validationSchema={Yup.object({
-          name: Yup.string().required("Please fill in your Full Name"),
-          emailAddress: Yup.string()
-            .email("Invalid Email Address")
-            .required("Please fill in your Email Address"),
-          password: Yup.string()
-            .min(8, "Password must be at least 8 characters")
-            .matches(
-              /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/,
-              "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-            )
-            .required("Please fill in your desired Password"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          const areAnyValuesEmpty = Object.values(values).some(
-            (value) => value === ""
-          );
-          if (areAnyValuesEmpty) {
-            setSubmitting(false);
-          } else {
-            setInfo({ ...info, ...values });
-          }
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        pt: "5rem",
+      }}
+    >
+      <Paper
+        elevation={5}
+        sx={{
+          maxWidth: "max-content",
+          padding: "1rem",
+          margin: "3rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Form>
-          <Field
-            as={TextField}
-            label="Name"
-            name="name"
-            placeholder="John"
-            helpertext={ErrorMessage}
-          />
-          <Field
-            as={TextField}
-            label="Email"
-            name="email"
-            placeholder="john123@email.com"
-            helpertext={ErrorMessage}
-          />
-          <Field
-            as={TextField}
-            label="Password"
-            type="password"
-            name="password"
-            helpertext={ErrorMessage}
-          />
-          <Button variant="contained" type="submit">
-            Register
-          </Button>
-        </Form>
-      </Formik>
-      <Button variant="outlined" onClick={() => navigate("/login")}>
-        Login
-      </Button>
-    </>
+        <Typography variant="h6" sx={{ m: "1rem" }}>
+          Sign Up
+        </Typography>
+
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <TextField
+              name="name"
+              label="Name *"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+              placeholder="John"
+              size="small"
+            />
+            <TextField
+              name="email"
+              label="Email *"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              placeholder="john123@email.com"
+              size="small"
+            />
+            <TextField
+              name="password"
+              label="Password *"
+              type="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              size="small"
+            />
+            <Button variant="contained" type="submit">
+              Register
+            </Button>
+          </Box>
+        </form>
+
+        <Typography variant="subtitle2" sx={{ m: "1rem" }}>
+          Already have an account?
+        </Typography>
+        <Button
+          variant="outlined"
+          fullWidth
+          sx={{ mb: "1rem" }}
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </Button>
+      </Paper>
+    </Container>
   );
 };
 
-export default Register;
+export default RegisterForm;

@@ -1,73 +1,101 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { useFormik } from "formik";
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { LoginForm as LoginFormProps } from "../../types";
+import { initialValues, validationSchema } from "./LoginFormSchema";
 
-interface initialValues {
-  email: "";
-  password: "";
+interface Props {
+  onSubmit: (values: LoginFormProps) => void;
 }
 
-const Login = () => {
-  const [info, setInfo] = useState<initialValues>({
-    email: "",
-    password: "",
+const LoginForm = ({ onSubmit }: Props) => {
+  const handleSubmit = (values: LoginFormProps) => {
+    onSubmit(values);
+  };
+
+  const formik = useFormik({
+    initialValues: initialValues,
+    onSubmit: handleSubmit,
+    validationSchema: validationSchema,
   });
+
   const navigate = useNavigate();
 
   return (
-    <>
-      <Formik
-        initialValues={info}
-        validationSchema={Yup.object({
-          emailAddress: Yup.string()
-            .email("Invalid Email Address")
-            .required("Please fill in your Email Address"),
-          password: Yup.string()
-            .min(8, "Password must be at least 8 characters")
-            .matches(
-              /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/,
-              "Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character"
-            )
-            .required("Please fill in your desired Password"),
-        })}
-        onSubmit={(values, { setSubmitting }) => {
-          const areAnyValuesEmpty = Object.values(values).some(
-            (value) => value === ""
-          );
-          if (areAnyValuesEmpty) {
-            setSubmitting(false);
-          } else {
-            setInfo({ ...info, ...values });
-          }
+    <Container
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        pt: "5rem",
+      }}
+    >
+      <Paper
+        elevation={5}
+        sx={{
+          maxWidth: "max-content",
+          padding: "1rem",
+          margin: "3rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Form>
-          <Field
-            as={TextField}
-            label="Email"
-            name="email"
-            placeholder="john123@email.com"
-            helpertext={ErrorMessage}
-          />
-          <Field
-            as={TextField}
-            label="Password"
-            type="password"
-            name="password"
-            helpertext={ErrorMessage}
-          />
-          <Button variant="contained" type="submit">
-            Login
-          </Button>
-        </Form>
-      </Formik>
-      <Button variant="outlined" onClick={() => navigate("/register")}>
-        Register
-      </Button>
-    </>
+        <Typography variant="h6" sx={{ m: "1rem" }}>
+          Sign In
+        </Typography>
+        <form onSubmit={formik.handleSubmit}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <TextField
+              name="email"
+              label="Email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              placeholder="john123@email.com"
+              size="small"
+            />
+            <TextField
+              name="password"
+              label="Password"
+              type="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              size="small"
+            />
+
+            <Button variant="contained" type="submit">
+              Login
+            </Button>
+          </Box>
+        </form>
+        <Typography variant="subtitle2" sx={{ m: "1rem" }}>
+          Dont have an account?
+        </Typography>
+        <Button
+          variant="outlined"
+          fullWidth
+          sx={{ mb: "1rem" }}
+          onClick={() => navigate("/register")}
+        >
+          Register
+        </Button>
+      </Paper>
+    </Container>
   );
 };
 
-export default Login;
+export default LoginForm;
